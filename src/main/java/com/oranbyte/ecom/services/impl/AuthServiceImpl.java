@@ -106,8 +106,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 
 	@Override
-	public ResponseEntity<?> checkToken() {
-
+	public ResponseEntity<?> checkToken() { 
 		return AppUtils.getApiResponse(true, "Token is valid", true);
 	}
 
