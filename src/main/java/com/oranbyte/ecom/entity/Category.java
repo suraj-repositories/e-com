@@ -27,7 +27,6 @@ public class Category extends BaseEntity{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
  
 	@Column(nullable = true)
 	private Long parentId;
@@ -39,11 +38,7 @@ public class Category extends BaseEntity{
 	private String image;
 	
 	@Column(nullable = false)
-	private String slug;
- 
-//	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)  
-//	private List<Product> products = new ArrayList<>();
-
+	private String slug; 
 	 
 	@Transient
 	private List<Category> childs = new ArrayList<>();

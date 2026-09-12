@@ -16,7 +16,7 @@ public class VendorDto {
 	private String description;
 	
 	private String address;
-	
+	 
 	private String logo;
 	
 	private BigDecimal latitude;

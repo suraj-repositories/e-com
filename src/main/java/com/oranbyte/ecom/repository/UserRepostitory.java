@@ -16,6 +16,8 @@ import jakarta.transaction.Transactional;
 public interface UserRepostitory extends JpaRepository<User, Long> {
 
 	User findByEmailId(@Param("email") String email);
+	
+	User findByUsername(@Param("username") String email);
 
 	List<UserDto> getAllUser();
 

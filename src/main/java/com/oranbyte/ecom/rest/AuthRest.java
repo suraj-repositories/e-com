@@ -14,19 +14,19 @@ import jakarta.validation.Valid;
 
 @RequestMapping(path = "/auth")
 public interface AuthRest {
-	
-	@PostMapping(path = "/signup")
+
+	@PostMapping("/signup")
 	ResponseEntity<?> signUp(@Valid @RequestBody SignupRequest signupRequest);
 
-	@PostMapping(path = "/login")
+	@PostMapping("/login")
 	ResponseEntity<?> login(@RequestBody(required = true) Map<String, String> requestMap);
-	
-	@GetMapping(path="/checkToken")
+
+	@GetMapping("/checkToken")
 	ResponseEntity<?> checkToken();
-	
-	@PostMapping(path="/changePassword")
+
+	@PostMapping("/changePassword")
 	ResponseEntity<?> changePassword(@RequestBody(required = true) Map<String, String> requestmapMap);
-	
-	@PostMapping(path = "/forgotPassword")
+
+	@PostMapping("/forgotPassword")
 	ResponseEntity<?> forgotPassword(@RequestBody(required = true) Map<String, String> requestMap);
 }

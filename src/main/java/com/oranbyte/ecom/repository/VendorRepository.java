@@ -6,4 +6,6 @@ import com.oranbyte.ecom.entity.Vendor;
 
 public interface VendorRepository extends JpaRepository<Vendor, Long>{
 
+	 boolean existsByUserId(Long userId);
+	
 }

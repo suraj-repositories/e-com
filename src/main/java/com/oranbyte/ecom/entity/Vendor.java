@@ -13,11 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
 
 @Entity
 @Getter
@@ -25,37 +24,34 @@ import lombok.Setter;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "vendors")
-public class Vendor extends BaseEntity{
+public class Vendor extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
+
+	@OneToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "user_id", nullable = false, unique = true)
 	private User user;
-	
+
 	@Column(name = "storeName")
 	private String storeName;
-	
+
 	@Lob
 	@Column(columnDefinition = "TEXT")
 	private String description;
-	
+
 	@Column
 	private String logo;
-	
+
 	@Column
 	private String address;
-	
+
 	@Column(name = "latitude", precision = 10, scale = 7)
 	private BigDecimal latitude;
 
 	@Column(name = "longitude", precision = 10, scale = 7)
 	private BigDecimal longitude;
-	
-	
-	
-	
+
 }

@@ -18,6 +18,7 @@ import com.oranbyte.ecom.config.CustomerUserDetailService;
 import com.oranbyte.ecom.config.JwtFilter;
 import com.oranbyte.ecom.config.JwtUtil;
 import com.oranbyte.ecom.entity.User;
+import com.oranbyte.ecom.mapper.UserMapper;
 import com.oranbyte.ecom.repository.UserRepostitory;
 import com.oranbyte.ecom.request.SignupRequest;
 import com.oranbyte.ecom.services.AuthService;
@@ -43,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
 	private final EmailUtils emailUtils;
 	private final JwtFilter jwtFilter;
 	private final UserService userService;
+	private final UserMapper userMapper;
 
 	@Override
 	public ResponseEntity<?> signUp(SignupRequest request) {
@@ -69,29 +71,37 @@ public class AuthServiceImpl implements AuthService {
 					lang.getValue("something-went-wrong"), null);
 		}
 	}
- 
 	
-
 	@Override
 	public ResponseEntity<?> login(Map<String, String> requestMap) {
 
 		log.info("Inside login {}", requestMap);
 
 		try {
+			
+			User user = null;
+			if(requestMap.get("username") != null) {
+				user = userRepository.findByUsername(requestMap.get("username"));
+			}else if(requestMap.get("email") != null) {
+				user = userRepository.findByEmail(requestMap.get("email"));
+			} 
+			
+			if(user == null) {
+				return AppUtils.getApiResponse(HttpStatus.BAD_REQUEST, false, "Wrong Credentials!", null);
+			}
+			 
 			Authentication auth = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(requestMap.get("email"), requestMap.get("password")));
+					new UsernamePasswordAuthenticationToken(user.getUsername(), requestMap.get("password")));
 
 			if (auth.isAuthenticated()) {
-
-				User userDetail = customerUserDetailService.getUserDetail(requestMap.get("email"));
+				User userDetail = customerUserDetailService.getUserDetail(user.getUsername());
 
 				if (userDetail != null && Boolean.TRUE.equals(userDetail.getIsActive())) {
+					String token = jwtUtil.generateToken(user.getUsername(), user.getRole());
 
-					String token = jwtUtil.generateToken(userDetail.getEmail(), userDetail.getRole());
-
-					Map<String, String> data = new HashMap<>();
+					Map<String, Object> data = new HashMap<>();
 					data.put("token", token);
-
+                    data.put("user", userMapper.toDto(userDetail));
 					return AppUtils.getApiResponse(true, "Login successful!", data);
 				}
 
@@ -107,7 +117,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public ResponseEntity<?> checkToken() { 
-		return AppUtils.getApiResponse(true, "Token is valid", true);
+		return AppUtils.getApiResponse(true, "Token is valid", null);
 	}
 
 	@Override
@@ -121,7 +131,6 @@ public class AuthServiceImpl implements AuthService {
 			}
 
 			if (!passwordEncoder.matches(requestMap.get("oldPassword"), user.getPassword())) {
-
 				return AppUtils.getApiResponse(HttpStatus.BAD_REQUEST, false, "Incorrect Old Password", null);
 			}
 
@@ -146,15 +155,10 @@ public class AuthServiceImpl implements AuthService {
 			User user = userRepository.findByEmail(requestMap.get("email"));
 
 			if (!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) {
-
 				String password = String.format("%06d", new Random().nextInt(1_000_000));
-
 				user.setPassword(passwordEncoder.encode(password));
-
 				emailUtils.forgotMail(user.getEmail(), "Credentials For app", password);
-
 				userRepository.save(user);
-
 				return AppUtils.getApiResponse(true, "Check your email for credentials!", null);
 			}
 

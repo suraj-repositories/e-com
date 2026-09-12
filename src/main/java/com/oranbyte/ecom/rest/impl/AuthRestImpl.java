@@ -48,6 +48,7 @@ public class AuthRestImpl implements AuthRest{
 		return AppUtils.getApiResponse(HttpStatus.INTERNAL_SERVER_ERROR, false, lang.getValue("something-went-wrong"), null);
 		
 	}
+	
 	@Override
 	public ResponseEntity<?> checkToken() {
 		try {

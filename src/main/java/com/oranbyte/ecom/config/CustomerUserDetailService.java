@@ -28,19 +28,19 @@ public class CustomerUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Inside loadUserByUsername {}", username);
         
-        com.oranbyte.ecom.entity.User userDetail = userRepo.findByEmailId(username);  
+        com.oranbyte.ecom.entity.User userDetail = userRepo.findByUsername(username);  
         
         log.info("User is here: {}", userDetail);
 
         if (userDetail != null) {
-            return new User(userDetail.getEmail(), userDetail.getPassword(), new ArrayList<>());
+            return new User(userDetail.getUsername(), userDetail.getPassword(), new ArrayList<>());
         } else {
             throw new UsernameNotFoundException(lang.getValue("user-not-found"));
         }
     }
 
-    public com.oranbyte.ecom.entity.User getUserDetail(String email) {
-        log.info("Fetching user details for email: {}", email);
-        return userRepo.findByEmailId(email);  
+    public com.oranbyte.ecom.entity.User getUserDetail(String username) {
+        log.info("Fetching user details for username: {}", username);
+        return userRepo.findByUsername(username);  
     }
 }
