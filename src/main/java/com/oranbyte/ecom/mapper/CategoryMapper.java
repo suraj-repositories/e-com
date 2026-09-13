@@ -21,6 +21,7 @@ public class CategoryMapper {
         dto.setName(entity.getName());
         dto.setImage(entity.getImage());
         dto.setSlug(entity.getSlug());
+        dto.setIsActive(entity.getIsActive());
 
         if (entity.getChilds() != null) {
             dto.setChilds(
@@ -43,13 +44,4 @@ public class CategoryMapper {
 
         return entity;
     }
-
-    public void updateEntity(Category entity, CategoryRequest request) {
-        entity.setParentId(request.getParentId());
-        entity.setName(request.getName());
-
-//        if (request.getImage() != null) {
-//            entity.setImage(request.getImage());
-//        }
-    }
-}
+ }

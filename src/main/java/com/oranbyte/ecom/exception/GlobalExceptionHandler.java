@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.oranbyte.ecom.util.AppUtils;
 import com.oranbyte.ecom.util.ValidationErrorResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -35,6 +37,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<?> handleBusinessException(AppException ex) {
 
 		return AppUtils.getApiResponse(ex.getStatus(), false, ex.getMessage(), null);
+	}
+
+	@ExceptionHandler(ExpiredJwtException.class)
+	public ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException ex) {
+
+		return AppUtils.getApiResponse(HttpStatus.UNAUTHORIZED, false, "JWT token has expired. Please login again.",
+				null);
 	}
 
 	@ExceptionHandler(IOException.class)

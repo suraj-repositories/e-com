@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class AppUtils { 
-	
+public class AppUtils {
+
 	public static ResponseEntity<?> getApiResponse(HttpStatus status, Boolean success, String message, Object data) {
+
+		if (data instanceof Page<?>) {
+			Page<?> page = (Page<?>) data;
+
+			data = new PageResponse<>(page.getContent(), page.getNumber(), page.getSize(), page.getTotalElements(),
+					page.getTotalPages(), page.isFirst(), page.isLast());
+		}
+
 		return ResponseEntity.status(status).body(new ApiResponse<>(success, message, data));
 	}
 
 	public static ResponseEntity<?> getApiResponse(Boolean success, String message, Object data) {
-		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(success, message, data));
+		return getApiResponse(HttpStatus.OK, success, message, data);
 	}
 
 	public static ResponseEntity<?> getValidationErrorResponse(String field, String message) {
@@ -70,6 +79,5 @@ public class AppUtils {
 		}
 		return new HashMap<>();
 	}
- 
 
 }
