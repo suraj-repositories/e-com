@@ -30,7 +30,10 @@ import lombok.Setter;
 @DynamicUpdate
 @Table(name = "categories")
 @FilterDef(name = "activeFilter")
-@Filter(name = "activeFilter", condition = "deleted_at IS NULL")
+@Filter(
+    name = "activeFilter",
+    condition = "deleted_at IS NULL"
+)
 public class Category extends BaseEntity {
 
 	@Id

@@ -1,6 +1,7 @@
 package com.oranbyte.ecom.services.impl;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -35,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private final CategoryMapper categoryMapper;
 	private final FileService fileService;
 	private final Language lang;
-	
+
 	private static final String UPLOAD_DIR = "categories";
 
 	@Override
@@ -137,12 +138,12 @@ public class CategoryServiceImpl implements CategoryService {
 				.orElseThrow(() -> new AppException(lang.getValue("category-not-found"), HttpStatus.NOT_FOUND));
 
 		String image = fileService.uploadFile(file, UPLOAD_DIR);
-		
-		if (image != null) { 
-			if(category.getImage() != null) {
+
+		if (image != null) {
+			if (category.getImage() != null) {
 				fileService.deleteIfExists(category.getImage());
 			}
-			
+
 			category.setImage(image);
 		}
 
@@ -152,15 +153,13 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void deleteCategory(Long id) {
+
 		Category category = categoryRepository.findById(id)
 				.orElseThrow(() -> new AppException(lang.getValue("category-not-found"), HttpStatus.NOT_FOUND));
-		
-		String image = category.getImage();
-		
-		categoryRepository.delete(category);
-		
-		fileService.deleteIfExists(image);
-	
+
+		category.setDeletedAt(new Date());
+
+		categoryRepository.save(category);
 	}
 
 }
