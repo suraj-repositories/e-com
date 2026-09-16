@@ -9,8 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.oranbyte.ecom.config.HibernateFilterManager;
 import com.oranbyte.ecom.dto.CategoryDto;
 import com.oranbyte.ecom.entity.Category;
 import com.oranbyte.ecom.exception.AppException;
@@ -36,6 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private final CategoryMapper categoryMapper;
 	private final FileService fileService;
 	private final Language lang;
+	private final HibernateFilterManager filterManager;
 
 	private static final String UPLOAD_DIR = "categories";
 
@@ -97,7 +100,10 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public CategoryDto getCategory(Long id) {
+		  filterManager.enableActiveFilter();
+		
 		Category category = categoryRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException(lang.getValue("category-not-found")));
 		CategoryDto dto = categoryMapper.toDto(category);
@@ -109,7 +115,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<CategoryDto> getChildren(Long parentId) {
+	public List<CategoryDto> getChildren(Long parentId) { 
 		List<CategoryDto> children = categoryRepository.getChildren(parentId);
 		children = children.stream().map((dto) -> {
 			dto.setImage(fileService.getFullPath(dto.getImage()));
@@ -120,7 +126,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Page<CategoryDto> getTopCategories(String search, Pageable pageable) {
-
+		filterManager.enableActiveFilter();
 		Specification<Category> specification = Specification.where(CategorySpecification.isTopLevel())
 				.and(CategorySpecification.search(search));
 
@@ -155,10 +161,8 @@ public class CategoryServiceImpl implements CategoryService {
 	public void deleteCategory(Long id) {
 
 		Category category = categoryRepository.findById(id)
-				.orElseThrow(() -> new AppException(lang.getValue("category-not-found"), HttpStatus.NOT_FOUND));
-
-		category.setDeletedAt(new Date());
-
+				.orElseThrow(() -> new AppException(lang.getValue("category-not-found"), HttpStatus.NOT_FOUND)); 
+		category.setDeletedAt(new Date()); 
 		categoryRepository.save(category);
 	}
 

@@ -17,45 +17,42 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class HibernateFilterInterceptor implements HandlerInterceptor {
 
-    private final EntityManager entityManager;
+	private final EntityManager entityManager;
 
-    @Override
-    public boolean preHandle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Object handler) {
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        Session session = entityManager.unwrap(Session.class);
+		Session session = entityManager.unwrap(Session.class);
 
-        if (session.getEnabledFilter("activeFilter") != null) {
-            session.disableFilter("activeFilter");
-        }
+		if (session.getEnabledFilter("activeFilter") != null) {
+			session.disableFilter("activeFilter");
+		}
+		 
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null || !authentication.isAuthenticated()) {
 
-        if (authentication == null ||
-            !authentication.isAuthenticated()) {
+			session.enableFilter("activeFilter");
 
-            session.enableFilter("activeFilter");
+			return true;
+		}
 
-            return true;
-        }
+		 
+		boolean isAdmin = authentication.getAuthorities().stream()
+		        .anyMatch(authority -> { 
+		            return "ROLE_ADMIN".equals(authority.getAuthority());
+		        });
+		 
 
-        boolean isAdmin = authentication.getAuthorities()
-                .stream()
-                .anyMatch(authority ->
-                        "ROLE_ADMIN".equals(authority.getAuthority()));
+		if (!isAdmin) {
+			session.enableFilter("activeFilter");
 
-        if (!isAdmin) {
-            session.enableFilter("activeFilter");
+			log.info("Hibernate activeFilter ENABLED for user");
 
-            log.debug("Hibernate activeFilter ENABLED for user");
+		} else {
+			log.info("Hibernate activeFilter DISABLED for admin");
+		}
 
-        } else {
-            log.debug("Hibernate activeFilter DISABLED for admin");
-        }
-
-        return true;
-    }
+		return true;
+	}
 }

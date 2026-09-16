@@ -35,7 +35,7 @@ public interface CategoryRest {
 	ResponseEntity<?> getCategory(@PathVariable("id") Long id);
 
 	@GetMapping("/all")
-	ResponseEntity<?> getCategories(@RequestParam(required = false) String searchuh,
+	ResponseEntity<?> getCategories(@RequestParam(required = false) String search,
 			@PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable);
 
 	@PutMapping(path = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

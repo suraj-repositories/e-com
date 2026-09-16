@@ -9,9 +9,10 @@ import com.oranbyte.ecom.entity.User;
 public class UserMapper {
 
 	public User toEntity(UserDto dto) {
+		
 		User user = new User();
 		
-		user.setId(dto.getId());
+     	user.setId(dto.getId());
 		user.setName(dto.getName());
 		user.setEmail(dto.getEmail());
 		user.setUsername(dto.getUsername());

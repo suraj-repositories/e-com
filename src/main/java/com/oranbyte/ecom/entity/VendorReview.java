@@ -21,7 +21,7 @@ import lombok.Setter;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "vendor_reviews")
-public class VendorReview {
+public class VendorReview extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +41,6 @@ public class VendorReview {
 	
 	@Column(length = 1000)
 	private String comment;
-	
-	
-	
-	
+	 
 	
 }

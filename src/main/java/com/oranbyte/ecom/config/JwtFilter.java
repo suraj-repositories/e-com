@@ -80,22 +80,14 @@ public class JwtFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 
 		} catch (ExpiredJwtException ex) {
-
 			log.warn("JWT token expired for request: {}", request.getRequestURI());
-
 			sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED,
 					"JWT token has expired. Please login again.");
-
 		} catch (JwtException ex) {
-
 			log.warn("Invalid JWT token: {}", ex.getMessage());
-
 			sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token. Please login again.");
-
 		} catch (Exception ex) {
-
 			log.error("JWT authentication error", ex);
-
 			sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed.");
 		}
 	}
