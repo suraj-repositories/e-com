@@ -1,6 +1,5 @@
 package com.oranbyte.ecom.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +25,8 @@ import lombok.Setter;
 @Setter
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "product_variants")
-public class ProductVariant extends BaseEntity {
+@Table(name = "product_images")
+public class ProductImage extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,23 +37,20 @@ public class ProductVariant extends BaseEntity {
 	@JoinColumn(name = "product_id", nullable = false)
 	private Product product;
 
-	@Column(nullable = false, unique = true, length = 100)
-	private String sku;
+	@Column(nullable = false, length = 500)
+	private String image;
 
-	@Column(nullable = false, precision = 10, scale = 2)
-	private BigDecimal price;
+	@Column(name = "sort_order", nullable = false)
+	private Integer sortOrder = 0;
 
-	@Column(nullable = false)
-	private Integer stock = 0;
-
-	@Column(name = "is_active", nullable = false)
-	private Boolean isActive = true;
+	@Column(name = "is_primary", nullable = false)
+	private Boolean isPrimary = false;
 
 	@OneToMany(
-		mappedBy = "variant",
+		mappedBy = "productImage",
 		fetch = FetchType.LAZY,
 		cascade = CascadeType.ALL,
 		orphanRemoval = true
 	)
-	private List<VariantAttributeValue> attributeValues = new ArrayList<>();
+	private List<ProductImageAttribute> attributes = new ArrayList<>();
 }

@@ -1,10 +1,13 @@
 package com.oranbyte.ecom.entity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,17 +15,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @DynamicInsert
+@DynamicUpdate
 @Getter
 @Setter
-@DynamicUpdate
 @Table(name = "products")
 public class Product extends BaseEntity {
 
@@ -39,20 +42,27 @@ public class Product extends BaseEntity {
 	@JoinColumn(name = "category_id", nullable = false)
 	private Category category;
 
-	@Column
+	@Column(nullable = false, length = 200)
 	private String name;
 
-	@Lob
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
-	@Column(nullable = false, precision = 2)
+	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
 
 	@Column
 	private Integer stock = 0;
 
-	@Column
-	private Boolean isActive;
+	@Column(name = "is_active", nullable = false)
+	private Boolean isActive = true;
 
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductAttribute> attributes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductVariant> variants = new ArrayList<>();
+
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ProductImage> images = new ArrayList<>();
 }

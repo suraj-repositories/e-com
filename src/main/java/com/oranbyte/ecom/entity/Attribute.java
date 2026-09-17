@@ -1,6 +1,5 @@
 package com.oranbyte.ecom.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +13,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -26,35 +23,17 @@ import lombok.Setter;
 @Setter
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "product_variants")
-public class ProductVariant extends BaseEntity {
+@Table(name = "attributes")
+public class Attribute extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "product_id", nullable = false)
-	private Product product;
-
 	@Column(nullable = false, unique = true, length = 100)
-	private String sku;
+	private String name;
 
-	@Column(nullable = false, precision = 10, scale = 2)
-	private BigDecimal price;
-
-	@Column(nullable = false)
-	private Integer stock = 0;
-
-	@Column(name = "is_active", nullable = false)
-	private Boolean isActive = true;
-
-	@OneToMany(
-		mappedBy = "variant",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
-	)
-	private List<VariantAttributeValue> attributeValues = new ArrayList<>();
+	@OneToMany(mappedBy = "attribute", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<AttributeValue> values = new ArrayList<>();
 }
