@@ -1,5 +1,6 @@
 package com.oranbyte.ecom.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +24,14 @@ public class CategoryDto {
 	private String image;
 
 	private String slug;
-	
+
 	private Boolean isActive;
 
 	private List<CategoryDto> childs = new ArrayList<>();
+
+	private LocalDateTime createdAt;
+
+	private LocalDateTime updatedAt;
 
 	public CategoryDto(Long id, String name, String image, String slug, Long parentId, Boolean isActive) {
 		this.id = id;

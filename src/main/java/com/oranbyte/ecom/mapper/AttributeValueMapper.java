@@ -13,7 +13,8 @@ public class AttributeValueMapper {
 		AttributeValueDto dto = new AttributeValueDto();
 		dto.setId(value.getId());
 		dto.setValue(value.getValue());
-		
+		dto.setCreatedAt(value.getCreatedAt());
+		dto.setUpdatedAt(value.getUpdatedAt());
 		return dto;
 		
 	}

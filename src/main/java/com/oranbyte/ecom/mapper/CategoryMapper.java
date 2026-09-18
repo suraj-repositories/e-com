@@ -22,6 +22,8 @@ public class CategoryMapper {
         dto.setImage(entity.getImage());
         dto.setSlug(entity.getSlug());
         dto.setIsActive(entity.getIsActive());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
 
         if (entity.getChilds() != null) {
             dto.setChilds(

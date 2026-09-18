@@ -12,25 +12,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.oranbyte.ecom.request.AttributeRequest;
+import com.oranbyte.ecom.request.ProductRequest;
 
 import jakarta.validation.Valid;
 
-@RequestMapping(path = "/attributes")
-public interface AttributeRest {
-	
+@RequestMapping(path = "/products")
+public interface ProductRest {
+
 	@PostMapping("/create")
-	ResponseEntity<?> createAttribute(@Valid @RequestBody AttributeRequest request);
-	
-	@PutMapping("/{id}")
-	ResponseEntity<?> updateAttribute(@PathVariable Long id, @Valid @RequestBody AttributeRequest request);
-	
+	ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest request);
+
 	@GetMapping("/{id}")
-	ResponseEntity<?> getAttribute(@PathVariable Long id);
-	
+	ResponseEntity<?> getProduct(@PathVariable Long id);
+
+	@PutMapping("/{id}")
+	ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequest request);
+
 	@GetMapping
-	ResponseEntity<?> getAttributes(@RequestParam(required = false) String search,
-			@PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable);
-	
-	
+	ResponseEntity<?> getProducts(@RequestParam(required = false) String search,
+			@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable);
 }

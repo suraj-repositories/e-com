@@ -23,6 +23,8 @@ public class VendorMapper {
         vendor.setLogo(dto.getLogo());
         vendor.setLatitude(dto.getLatitude());
         vendor.setLongitude(dto.getLongitude());
+        vendor.setCreatedAt(dto.getCreatedAt());
+        vendor.setUpdatedAt(dto.getUpdatedAt());
 
         return vendor;
     }
@@ -45,7 +47,7 @@ public class VendorMapper {
             return null;
         }
 
-        return new VendorDto(
+        VendorDto dto = new VendorDto(
                 vendor.getId(),
                 vendor.getStoreName(),
                 vendor.getDescription(),
@@ -54,6 +56,10 @@ public class VendorMapper {
                 vendor.getLatitude(),
                 vendor.getLongitude()
         );
+        
+        dto.setCreatedAt(vendor.getCreatedAt());
+        dto.setUpdatedAt(vendor.getUpdatedAt());
+        return dto;
     }
 
     public VendorDto toDto(VendorRequest request) {

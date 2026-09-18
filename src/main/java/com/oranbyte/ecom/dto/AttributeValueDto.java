@@ -1,24 +1,28 @@
 package com.oranbyte.ecom.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor 
+@NoArgsConstructor
 @ToString
 public class AttributeValueDto {
 
 	private Long id;
+	
 	private String value;
-	
-	
+
+	private LocalDateTime createdAt;
+
+	private LocalDateTime updatedAt;
+
 	public AttributeValueDto(Long id, String value) {
 		super();
 		this.id = id;
 		this.value = value;
 	}
 
-
-	
 }

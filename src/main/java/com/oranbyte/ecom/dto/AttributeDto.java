@@ -1,5 +1,6 @@
 package com.oranbyte.ecom.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.Data;
@@ -16,6 +17,10 @@ public class AttributeDto {
 	private String name;
 
 	private List<AttributeValueDto> attributeValues;
+	
+	private LocalDateTime createdAt;
+	
+	private LocalDateTime updatedAt;
 
 	public AttributeDto(Long id, String name, List<AttributeValueDto> attributeValues) {
 		super();

@@ -2,6 +2,8 @@ package com.oranbyte.ecom.services;
 
 import java.io.IOException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +20,6 @@ public interface VendorService {
 
 	ResponseEntity<?> updateLogo(Long id, MultipartFile logo) throws IOException;
 	
-	
+	Page<VendorDto> getVendors(String search, Pageable pageable);
 }
 

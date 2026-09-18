@@ -1,5 +1,7 @@
 package com.oranbyte.ecom.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,6 +21,10 @@ public class UserDto {
 
 	private Boolean isActive;
 
+	private LocalDateTime createdAt;
+
+	private LocalDateTime updatedAt;
+	
 	public UserDto(Long id, String name, String username, String email, String contactNumber, Boolean isActive) {
 		super();
 		this.id = id;

@@ -1,6 +1,7 @@
 package com.oranbyte.ecom.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,10 @@ public class VendorDto {
 	private BigDecimal latitude;
 	
 	private BigDecimal longitude;
+	
+	private LocalDateTime createdAt;
+
+	private LocalDateTime updatedAt;
 
 	public VendorDto(Long id, String storeName, String description, String address, String logo, BigDecimal latitude,
 			BigDecimal longitude) {

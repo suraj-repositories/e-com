@@ -18,7 +18,8 @@ public class UserMapper {
 		user.setUsername(dto.getUsername());
 		user.setContactNumber(dto.getContactNumber());
 		user.setIsActive(dto.getIsActive());
-		
+		user.setCreatedAt(dto.getCreatedAt());
+		user.setUpdatedAt(dto.getUpdatedAt());
 		return user;
 	}
 	
@@ -31,7 +32,8 @@ public class UserMapper {
 		dto.setUsername(user.getUsername());
 		dto.setContactNumber(user.getContactNumber());
 		dto.setIsActive(user.getIsActive());
-		
+		dto.setCreatedAt(user.getCreatedAt());
+		dto.setUpdatedAt(user.getUpdatedAt());
 		return dto;
 	}
 	

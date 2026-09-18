@@ -2,6 +2,8 @@ package com.oranbyte.ecom.rest.impl;
 
 import java.io.IOException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -46,6 +48,12 @@ public class VendorRestImpl implements VendorRest {
 	@Override
 	public ResponseEntity<?> updateLogo(Long id, MultipartFile logo) throws IOException {
 		return vendorService.updateLogo(id, logo);
+	}
+
+	@Override
+	public ResponseEntity<?> getVendors(String search, Pageable pageable) {
+		Page<VendorDto> page = vendorService.getVendors(search, pageable);
+		return AppUtils.getApiResponse(true, lang.getValue("vendors-fetched"), page);
 	}
 
 	

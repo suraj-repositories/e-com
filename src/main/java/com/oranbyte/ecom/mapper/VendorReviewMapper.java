@@ -40,7 +40,8 @@ public class VendorReviewMapper {
 		dto.setComment(entity.getComment());
 		dto.setUserDto(userMapper.toDto(entity.getUser()));
 		dto.setVendorDto(vendorMapper.toDto(entity.getVendor()));
-		
+		dto.setCreatedAt(entity.getCreatedAt());
+		dto.setUpdatedAt(entity.getUpdatedAt());
 		return dto;
 	}
 	

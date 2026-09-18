@@ -44,11 +44,6 @@ public class ProductAttribute extends BaseEntity {
 	@Column(name = "is_variant_attribute", nullable = false)
 	private Boolean isVariantAttribute = true;
 
-	@OneToMany(
-		mappedBy = "productAttribute",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
-	)
+	@OneToMany(mappedBy = "productAttribute", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductAttributeValue> values = new ArrayList<>();
 }

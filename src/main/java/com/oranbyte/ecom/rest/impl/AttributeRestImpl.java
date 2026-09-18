@@ -1,5 +1,7 @@
 package com.oranbyte.ecom.rest.impl;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +39,13 @@ public class AttributeRestImpl implements AttributeRest{
 	public ResponseEntity<?> getAttribute(Long id) {
 		AttributeDto dto = attributeService.getAttribute(id);
 		return AppUtils.getApiResponse(HttpStatus.OK, true, lang.getValue("attribute-fetched"), dto);
+	}
+
+	@Override
+	public ResponseEntity<?> getAttributes(String search, Pageable pageable) { 
+		Page<AttributeDto> page = attributeService.getAttributes(search, pageable);
+		return AppUtils.getApiResponse(true, lang.getValue("attributes-fetched"), page);
+
 	}
 	
 	

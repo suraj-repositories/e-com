@@ -41,19 +41,9 @@ public class ProductAttributeValue extends BaseEntity {
 	@JoinColumn(name = "attribute_value_id", nullable = false)
 	private AttributeValue attributeValue;
 
-	@OneToMany(
-		mappedBy = "productAttributeValue",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
-	)
+	@OneToMany(mappedBy = "productAttributeValue", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<VariantAttributeValue> variantAttributeValues = new ArrayList<>();
 
-	@OneToMany(
-		mappedBy = "productAttributeValue",
-		fetch = FetchType.LAZY,
-		cascade = CascadeType.ALL,
-		orphanRemoval = true
-	)
+	@OneToMany(mappedBy = "productAttributeValue", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImageAttribute> imageAttributes = new ArrayList<>();
 }

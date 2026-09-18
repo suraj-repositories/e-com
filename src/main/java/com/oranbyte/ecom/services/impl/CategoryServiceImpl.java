@@ -27,10 +27,8 @@ import com.oranbyte.ecom.util.Language;
 import com.oranbyte.ecom.util.SlugUtils;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Service
-@Slf4j
+@Service 
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 

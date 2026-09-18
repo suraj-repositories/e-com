@@ -19,7 +19,8 @@ public class AttributeMapper {
 		dto.setAttributeValues(attribute.getValues().stream().map((value) -> {
 			return attributeValueMapper.toDto(value);
 		}).toList());
-
+		dto.setCreatedAt(attribute.getCreatedAt());
+		dto.setUpdatedAt(attribute.getUpdatedAt());
 		return dto;
 	}
 

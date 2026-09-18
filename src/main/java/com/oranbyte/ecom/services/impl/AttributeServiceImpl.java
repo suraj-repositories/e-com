@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import com.oranbyte.ecom.repository.AttributeRepository;
 import com.oranbyte.ecom.repository.AttributeValueRepository;
 import com.oranbyte.ecom.request.AttributeRequest;
 import com.oranbyte.ecom.services.AttributeService;
+import com.oranbyte.ecom.specification.AttributeSpecification;
 import com.oranbyte.ecom.util.Language;
 
 import lombok.RequiredArgsConstructor;
@@ -100,6 +104,16 @@ public class AttributeServiceImpl implements AttributeService {
 		Attribute attribute = attributeRepository.findById(id)
 				.orElseThrow(() -> new AppException(lang.getValue("attribute-not-found"), HttpStatus.NOT_FOUND));
 		return attributeMapper.toDto(attribute);
+	}
+
+	@Override
+	public Page<AttributeDto> getAttributes(String search, Pageable pageable) {
+
+	    Specification<Attribute> specification =
+	            Specification.where(AttributeSpecification.search(search));
+
+	    return attributeRepository.findAll(specification, pageable)
+	            .map(attributeMapper::toDto);
 	}
 
 }

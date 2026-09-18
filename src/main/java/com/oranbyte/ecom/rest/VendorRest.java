@@ -2,6 +2,9 @@ package com.oranbyte.ecom.rest;
 
 import java.io.IOException;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,4 +36,8 @@ public interface VendorRest {
 	@PutMapping("/{id}/logo")
 	ResponseEntity<?> updateLogo(@PathVariable("id") Long id, @RequestParam("logo") MultipartFile logo) throws IOException;
 
+	@GetMapping
+	ResponseEntity<?> getVendors(@RequestParam(required = false) String search,
+			@PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.ASC) Pageable pageable);
+	
 }
